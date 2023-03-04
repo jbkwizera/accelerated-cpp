@@ -7,71 +7,39 @@
 #include <algorithm>
 #include <stdexcept>
 
-using std::cout;    using std::string;
-using std::cin;     using std::streamsize;
-using std::endl;    using std::setprecision;
-using std::vector;  using std::sort; 
-using std::istream; using std::domain_error;
+#include "grade.h"
+#include "median.h"
+#include "student.h"
 
-istream& read_hw(istream& in, vector<double>& hw)
-{
-    if (in) {
-        hw.clear();
-        double x;
-        while (in >> x)
-            hw.push_back(x);
-        in.clear();
-    }
-    return in;
-}
-
-double grade(double midterm, double final_exam, double homework)
-{
-    return 0.2 * midterm + 0.4 * final_exam + 0.4 * homework;
-}
-
-double median(vector<double> a)
-{
-    vector<double>::size_type size = a.size();
-    if (size == 0)
-        throw domain_error("median of an empty vector");
-
-    sort(a.begin(), a.end());
-    vector<double>::size_type mid = size/2;
-    return size % 2 == 0? (a[mid] + a[mid+1])/2 : a[mid];
-}
-
-double grade(double midterm, double final_exam, const vector<double>& hw)
-{
-    if (hw.size() == 0)
-        throw domain_error("student has done no homework");
-    return grade(midterm, final_exam, median(hw));
-}
+using std::cout;            using std::string;
+using std::cin;             using std::streamsize;
+using std::endl;            using std::setprecision;
+using std::vector;          using std::sort;
+using std::max;             using std::domain_error;
 
 int main()
 {
-    cout << "Please enter your first name: ";
-    string name;
-    cin >> name;
-    cout << "Hello, " << name << "!" << endl;
+    vector<Student> students;
+    Student record;
+    string::size_type maxlen = 0;
+    while (read_student(cin, record)) {
+        maxlen = max(maxlen, record.name.size());
+        students.push_back(record);
+    }
 
-    double midterm, final_exam;
-    cout << "Please enter your midterm and final exam grades: ";
-    cin >> midterm >> final_exam;
+    sort(students.begin(), students.end(), compare);
+    for (vector<Student>::size_type i = 0; i < students.size(); i++) {
+        cout << students[i].name
+             << string(maxlen + 1 - students[i].name.size(), ' ');
 
-    cout << "Enter all your homework grades followed by EOF : ";
-    vector<double> homework;
-    read_hw(cin, homework);
-
-    try {
-        streamsize prec = cout.precision();
-        cout << "Your final grade is " << setprecision(3)
-             << grade(midterm, final_exam, homework)
-             << setprecision(prec) << endl;
-    } catch (domain_error) {
-        cout << endl << "You must enter your grades. "
-                        "Please try again." << endl;
-        return 1;
+        try {
+            double final_grade = grade(students[i]);
+            streamsize prec = cout.precision();
+            cout << setprecision(3) << final_grade << setprecision(prec);
+        } catch (domain_error e) {
+            cout << e.what();
+        }
+        cout << endl;
     }
 
     return 0;
