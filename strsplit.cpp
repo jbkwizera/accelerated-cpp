@@ -1,27 +1,30 @@
-// str-split.cpp: taking strings apart
+// strsplit.cpp: taking strings apart
+#include <algorithm>
 #include <cctype>
 #include "strsplit.h"
 
 using std::vector;
 using std::string;
+using std::find_if;
+
+bool isnot_space(char c)
+{
+    return !isspace(c);
+}
 
 vector<string> strsplit(const string& s)
 {
     vector<string> ret;
-    string::size_type i = 0;
+    string::const_iterator i = s.begin();
     
-    while (i != s.size()) {
-        while (i != s.size() && isspace(s[i]))
-            ++i;
-        
-        string::size_type j = i;
-        while (j != s.size() && !isspace(s[j]))
-            ++j;
-        
-        if (i != j) {
-            ret.push_back(s.substr(i, j - i));
-            i = j;
-        }
+    while (i != s.end()) {
+        i = find_if(i, s.end(), isnot_space);
+
+        string::const_iterator j = find_if(i, s.end(), isspace);
+
+        if (i != s.end())
+            ret.push_back(string(i, j));
+        i = j;
     }
     return ret;
 }
