@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <stdexcept>
+#include <list>
 
 #include "grade.h"
 #include "median.h"
@@ -16,10 +17,11 @@ using std::cin;             using std::streamsize;
 using std::endl;            using std::setprecision;
 using std::vector;          using std::sort;
 using std::max;             using std::domain_error;
+using std::list;
 
 int main()
 {
-    vector<Student> students;
+    list<Student> students;
     Student record;
     string::size_type maxlen = 0;
     while (read_student(cin, record)) {
@@ -27,13 +29,14 @@ int main()
         students.push_back(record);
     }
 
-    sort(students.begin(), students.end(), compare);
-    for (vector<Student>::size_type i = 0; i < students.size(); i++) {
-        cout << students[i].name
-             << string(maxlen + 1 - students[i].name.size(), ' ');
+    students.sort(compare);
+    for (list<Student>::const_iterator student = students.begin();
+            student != students.end(); student++) {
+        cout << student->name
+             << string(maxlen + 1 - (student->name).size(), ' ');
 
         try {
-            double final_grade = grade(students[i]);
+            double final_grade = grade(*student);
             streamsize prec = cout.precision();
             cout << setprecision(3) << final_grade << setprecision(prec);
         } catch (domain_error e) {

@@ -1,8 +1,11 @@
 // student.cpp
+#include <list>
 #include "student.h"
+#include "grade.h"
 
 using std::istream;
 using std::vector;
+using std::list;
 
 bool compare(const Student& x, const Student& y)
 {
@@ -26,4 +29,19 @@ istream& read_student(istream& in, Student& s)
     in >> s.name >> s.midterm >> s.final_exam;
     read_hw(in, s.homework); // reuse read_hw code
     return in;
+}
+
+list<Student> extract_fails(list<Student>& students)
+{
+    list<Student> fail;
+    list<Student>::iterator iter = students.begin();
+
+    while (iter != students.end()) {
+        if (fgrade(*iter)) {
+            fail.push_back(*iter);
+            iter = students.erase(iter);
+        } else
+            iter++;
+    }
+    return fail;
 }

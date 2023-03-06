@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 
 struct Student
 {
@@ -15,5 +16,6 @@ struct Student
 bool compare(const Student&, const Student&);
 std::istream& read_student(std::istream&, Student&);
 std::istream& read_hw(std::istream&, std::vector<double>&);
+std::list<Student> extract_fails(std::list<Student>&);
 
 #endif
