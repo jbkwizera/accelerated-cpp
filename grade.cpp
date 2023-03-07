@@ -1,12 +1,15 @@
 // grade.cpp
+#include <algorithm>
 #include <stdexcept>
-
-#include "grade.h"
+#include <numeric>
 #include "stats.h"
+#include "grade.h"
 #include "student.h"
 
 using std::vector;
 using std::domain_error;
+using std::accumulate;
+using std::remove_copy;
 
 double grade(double midterm, double final_exam, double homework)
 {
@@ -37,4 +40,24 @@ double grade_aux(const Student& s)
     } catch(domain_error) {
         return grade(s.midterm, s.final_exam, 0);
     }
+}
+
+double grade_optimistic_median(const Student& s)
+{
+    vector<double> nonzero;
+    remove_copy(s.homework.begin(), s.homework.end(),
+            back_inserter(nonzero), 0);
+
+    if (nonzero.empty())
+        return grade(s.midterm, s.final_exam, 0);
+
+    return grade(s.midterm, s.final_exam, median(nonzero));
+}
+
+double grade_mean(const Student& s)
+{
+    double homework = accumulate(s.homework.begin(),
+            s.homework.end(), 0.0) / s.homework.size();
+
+    return grade(s.midterm, s.final_exam, homework);
 }

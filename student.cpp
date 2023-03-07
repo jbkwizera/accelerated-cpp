@@ -1,4 +1,5 @@
 // student.cpp
+#include <algorithm>
 #include <list>
 #include "student.h"
 #include "grade.h"
@@ -6,6 +7,7 @@
 using std::istream;
 using std::vector;
 using std::list;
+using std::find;
 
 bool compare(const Student& x, const Student& y)
 {
@@ -44,4 +46,10 @@ list<Student> extract_fails(list<Student>& students)
             iter++;
     }
     return fail;
+}
+
+bool did_all_homework(const Student& s)
+{
+    return (find(s.homework.begin(), s.homework.end(), 0)
+            == s.homework.end());
 }

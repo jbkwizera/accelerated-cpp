@@ -1,13 +1,11 @@
 // median.cpp
 #include <stdexcept>
 #include <algorithm>
-#include <numeric>
 #include "stats.h"
 
 using std::domain_error;
 using std::sort;
 using std::vector;
-using std::accumulate;
 
 double median(vector<double> v)
 {
@@ -18,9 +16,4 @@ double median(vector<double> v)
     sort(v.begin(), v.end());
     vector<double>::size_type mid = size/2;
     return size % 2 == 0? (v[mid-1] + v[mid])/2 : v[mid];
-}
-
-double mean(const vector<double>& v)
-{
-    return accumulate(v.begin(), v.end(), 0.0)/v.size();
 }
