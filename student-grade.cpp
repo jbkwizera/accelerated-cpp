@@ -9,7 +9,7 @@
 #include <list>
 
 #include "grade.h"
-#include "median.h"
+#include "stats.h"
 #include "student.h"
 
 using std::cout;            using std::string;

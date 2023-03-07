@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include "grade.h"
-#include "median.h"
+#include "stats.h"
 #include "student.h"
 
 using std::vector;
@@ -28,4 +28,13 @@ double grade(const Student& s)
 bool fgrade(const Student& s)
 {
     return grade(s) < 60;
+}
+
+double grade_aux(const Student& s)
+{
+    try {
+        return grade(s);
+    } catch(domain_error) {
+        return grade(s.midterm, s.final_exam, 0);
+    }
 }
