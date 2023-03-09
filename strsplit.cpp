@@ -7,7 +7,12 @@ using std::vector;
 using std::string;
 using std::find_if;
 
-bool isnot_space(char c)
+bool space(char c)
+{
+    return isspace(c);
+}
+
+bool not_space(char c)
 {
     return !isspace(c);
 }
@@ -18,9 +23,9 @@ vector<string> strsplit(const string& s)
     string::const_iterator i = s.begin();
     
     while (i != s.end()) {
-        i = find_if(i, s.end(), isnot_space);
+        i = find_if(i, s.end(), not_space);
 
-        string::const_iterator j = find_if(i, s.end(), isspace);
+        string::const_iterator j = find_if(i, s.end(), space);
 
         if (i != s.end())
             ret.push_back(string(i, j));
