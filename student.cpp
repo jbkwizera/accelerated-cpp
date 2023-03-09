@@ -4,9 +4,8 @@
 #include "student.h"
 #include "grade.h"
 
-using std::istream;
-using std::vector;
-using std::list;
+using std::istream;     using std::vector;
+using std::list;        using std::stable_partition;
 using std::find;
 
 bool compare(const Student& x, const Student& y)
@@ -45,6 +44,17 @@ list<Student> extract_fails(list<Student>& students)
         } else
             iter++;
     }
+    return fail;
+}
+
+vector<Student> extract_fails(vector<Student>& students)
+{
+    vector<Student>::iterator fbegin =
+        stable_partition(students.begin(), students.end(), pgrade);
+
+    vector<Student> fail(fbegin, students.end());
+    students.erase(fbegin, students.end());
+
     return fail;
 }
 

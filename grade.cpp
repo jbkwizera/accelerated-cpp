@@ -33,6 +33,11 @@ bool fgrade(const Student& s)
     return grade(s) < 60;
 }
 
+bool pgrade(const Student& s)
+{
+    return !fgrade(s);
+}
+
 double grade_aux(const Student& s)
 {
     try {

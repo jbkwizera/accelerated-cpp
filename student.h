@@ -17,6 +17,7 @@ bool compare(const Student&, const Student&);
 std::istream& read_student(std::istream&, Student&);
 std::istream& read_hw(std::istream&, std::vector<double>&);
 std::list<Student> extract_fails(std::list<Student>&);
+std::vector<Student> extract_fails(std::vector<Student>&);
 bool did_all_homework(const Student&);
 
 #endif
