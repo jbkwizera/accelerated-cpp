@@ -38,33 +38,28 @@ map<string, vector<vector<string>>>
     return result;
 }
 
+void generate(
+    const map<string, vector<vector<string>>>& grammar,
+    const string& category,
+    vector<string>& result)
+{
+    vector<vector<string>> rules =
+        grammar.find(category)->second;
+    vector<string> current_rule =
+        rules[get_random(0, rules.size())];
+
+    for (auto token: current_rule)
+        if (bracketed(token))
+            generate(grammar, token, result);
+        else
+            result.push_back(token);
+}
+
 vector<string> generate(
     const map<string, vector<vector<string>>>& grammar,
     const string& category)
 {
     vector<string> result;
-    vector<vector<string>> rules = 
-        grammar.find(category)->second;
-    vector<string> remaining = 
-        rules[get_random(0, rules.size())];
-
-    while (!remaining.empty()) {
-        string current_token = remaining.back();
-        remaining.pop_back();
-        
-        if (!bracketed(current_token))
-            result.push_back(current_token);
-        else {
-            vector<vector<string>> matches = 
-                grammar.find(current_token)->second;
-            vector<string> resolved =
-                matches[get_random(0, matches.size())];
-
-            for (auto token: resolved)
-                remaining.push_back(token);
-        }
-    }
-    reverse(result.begin(), result.end());
-
+    generate(grammar, category, result);
     return result;
 }
