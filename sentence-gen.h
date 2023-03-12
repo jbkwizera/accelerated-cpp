@@ -8,7 +8,7 @@
 #include <map>
 
 bool bracketed(const std::string&);
-unsigned int get_random(unsigned int, unsigned int);
+int nrand(int);
 
 std::map<std::string, std::vector<std::vector<std::string>>>
     read_grammar(std::ifstream&);

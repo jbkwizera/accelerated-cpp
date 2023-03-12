@@ -18,9 +18,13 @@ bool bracketed(const string& t)
     return n > 0 && t[0] == '<' && t[n-1] == '>';
 }
 
-unsigned int get_random(unsigned int a, unsigned int b)
+int nrand(int n)
 {
-    return a + rand() % (b - a);
+    const int bucket_size = RAND_MAX / n;
+    int r;
+    do r = rand() / bucket_size;
+    while (r >= n);
+    return r;
 }
 
 map<string, vector<vector<string>>>
@@ -43,10 +47,10 @@ void generate(
     const string& category,
     vector<string>& result)
 {
-    vector<vector<string>> rules =
+    const vector<vector<string>>& rules =
         grammar.find(category)->second;
-    vector<string> current_rule =
-        rules[get_random(0, rules.size())];
+    const vector<string>& current_rule =
+        rules[nrand(rules.size())];
 
     for (auto token: current_rule)
         if (bracketed(token))
