@@ -4,6 +4,7 @@
 #include <vector>
 #include "grade-analysis.h"
 #include "student.h"
+#include "grade.h"
 
 using std::cout;    using std::endl;
 using std::cin;     using std::vector;
@@ -30,10 +31,9 @@ int main()
         return 1;
     }
 
-    write_analysis(cout, "median", median_analysis, did, didnt);
-    write_analysis(cout, "average", average_analysis, did, didnt);
-    write_analysis(cout, "median of homework turned in",
-            optimistic_median_analysis, did, didnt);
-    
+    write_analysis(cout, "median", grade_aux, did, didnt);
+    write_analysis(cout, "average", grade_mean, did, didnt);
+    write_analysis(cout, "optimistic", grade_optimistic_median, did, didnt);
+
     return 0;
 }

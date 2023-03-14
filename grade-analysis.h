@@ -7,14 +7,16 @@
 #include <vector>
 #include "student.h"
 
-void write_analysis(std::ostream&,
-                    const std::string&,
-                    double(const std::vector<Student>&),
-                    const std::vector<Student>&,
-                    const std::vector<Student>&);
+void write_analysis(
+    std::ostream&,
+    const std::string&,
+    double(const Student&),
+    const std::vector<Student>&,
+    const std::vector<Student>&);
 
-double median_analysis(const std::vector<Student>&);
-double average_analysis(const std::vector<Student>&);
-double optimistic_median_analysis(const std::vector<Student>&);
+template<class GraderFunction>
+double analysis(const std::vector<Student>&, GraderFunction gradef);
+
+#include "grade-analysis.tpp"
 
 #endif

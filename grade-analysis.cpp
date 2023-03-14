@@ -1,5 +1,6 @@
 // grade-analysis.cpp
 #include <ostream>
+#include <iomanip>
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -11,42 +12,17 @@
 using std::vector;      using std::back_inserter;
 using std::transform;   using std::ostream;
 using std::string;      using std::endl;
-
-double median_analysis(const vector<Student>& students)
-{
-    vector<double> grades;
-
-    transform(students.begin(), students.end(),
-            back_inserter(grades), grade_aux);
-
-    return median(grades);
-}
-
-double average_analysis(const vector<Student>& students)
-{
-    vector<double> grades;
-
-    transform(students.begin(), students.end(),
-            back_inserter(grades), grade_mean);
-
-    return median(grades); 
-}
-
-double optimistic_median_analysis(const vector<Student>& students)
-{
-    vector<double> grades;
-
-    transform(students.begin(), students.end(),
-            back_inserter(grades), grade_optimistic_median);
-
-    return median(grades);
-}
+using std::left;        using std::right;
+using std::fixed;       using std::setprecision;
+using std::setw;
 
 void write_analysis(ostream& out, const string& name,
-        double analysis(const vector<Student>&),
+        double gradef(const Student&),
         const vector<Student>& did,
         const vector<Student>& didnt)
 {
-    out << name << ": median(did) = " << analysis(did) <<
-                   ": median(didnt) = " << analysis(didnt) << endl;
+    out << setw(20) << left << name
+        << fixed << setprecision(1) << setw(10) << tanalysis(did, gradef)
+        << fixed << setprecision(1) << setw(10) << tanalysis(didnt, gradef)
+        << endl;
 }
