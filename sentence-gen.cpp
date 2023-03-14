@@ -11,6 +11,7 @@
 
 using std::string;      using std::vector;
 using std::map;         using std::ifstream;
+using std::ostream_iterator;
 
 bool bracketed(const string& t)
 {
@@ -39,31 +40,5 @@ map<string, vector<vector<string>>>
             result[entry[0]].push_back(
                     vector<string>(entry.begin() + 1, entry.end()));
     }
-    return result;
-}
-
-void generate(
-    const map<string, vector<vector<string>>>& grammar,
-    const string& category,
-    vector<string>& result)
-{
-    const vector<vector<string>>& rules =
-        grammar.find(category)->second;
-    const vector<string>& current_rule =
-        rules[nrand(rules.size())];
-
-    for (auto token: current_rule)
-        if (bracketed(token))
-            generate(grammar, token, result);
-        else
-            result.push_back(token);
-}
-
-vector<string> generate(
-    const map<string, vector<vector<string>>>& grammar,
-    const string& category)
-{
-    vector<string> result;
-    generate(grammar, category, result);
     return result;
 }

@@ -4,12 +4,16 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
+#include <iterator>
+#include <list>
 #include "sentence-gen.h"
 
 using std::cout;        using std::cin;
 using std::ifstream;    using std::endl;
 using std::vector;      using std::string;
-using std::map;
+using std::map;         using std::back_inserter;
+using std::list;        using std::ostream_iterator;
 
 int main(int argc, const char* argv[])
 {
@@ -19,9 +23,9 @@ int main(int argc, const char* argv[])
 
     string category;
     while (cin >> category) {
-        vector<string> text = generate(grammar, category);
-        for (auto word: text)
-            cout << word << " ";
+        list<string> text;
+        generate(grammar, category, back_inserter(text));
+        copy(text.begin(), text.end(), ostream_iterator<string>(cout, " "));
         cout << endl;
     }
 
