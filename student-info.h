@@ -16,12 +16,10 @@ public:
 
 private:
     std::string n;
-    double midterm, final_exam;
+    double midterm, final_exam, total;
     std::vector<double> homework;
+    std::istream& read_hw(std::istream& in);
 };
-
-std::istream&
-    read_hw(std::istream& in, std::vector<double>& hw);
 
 bool compare(const Student_info&, const Student_info&);
 bool compare_grade(const Student_info&, const Student_info&);

@@ -15,13 +15,26 @@ Student_info::Student_info(std::istream& in)
 istream& Student_info::read(istream& in)
 {
     in >> n >> midterm >> final_exam;
-    read_hw(in, homework);
+    read_hw(in);
+    total = ::grade(midterm, final_exam, homework);
+    return in;
+}
+
+istream& Student_info::read_hw(istream& in)
+{
+    if (in) {
+        homework.clear();
+        double x;
+        while (in >> x)
+            homework.push_back(x);
+        in.clear();
+    }
     return in;
 }
 
 double Student_info::grade() const
 {
-    return ::grade(midterm, final_exam, homework);
+    return total;
 }
 
 bool compare(const Student_info& x, const Student_info& y)
