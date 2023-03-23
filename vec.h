@@ -44,6 +44,7 @@ public:
 
     iterator erase(const iterator&);
     iterator erase(const iterator&, const iterator&);
+    void clear() { uncreate(); }
 
     std::string tostring() const;
 
