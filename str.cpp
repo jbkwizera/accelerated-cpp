@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <cstring>
 #include <memory>
 #include <cctype>
@@ -6,50 +7,40 @@
 
 using std::ostream;     using std::istream;
 
-/*** memory management ***/
-void Str::create(size_type n, char c)
+/*** constructors ***/
+Str::Str()
 {
-    length = n;
-    data = alloc.allocate(length + 1);
-    std::uninitialized_fill(data, data + length, c);
-    data[length] = 0;
+    create();
 }
 
-void Str::create(const char* cp) 
+Str::Str(const char* cp)
 {
-    length = std::strlen(cp);
-    data = alloc.allocate(length + 1);
-    std::uninitialized_copy(cp, cp + length, data);
-    data[length] = 0;
+    create(cp, cp + std::strlen(cp));
 }
 
-template<class In>
-void Str::create(In b, In e)
+Str::Str(size_type n, char c)
 {
-    length = e - b;
-    data = alloc.allocate(length + 1);
-    std::uninitialized_copy(b, e, data);
-    data[length] = 0;
+    create(n, c);
 }
 
-void Str::uncreate()
+template<class In> Str::Str(In b, In e)
 {
-    if (length) {
-        for (size_type i = length - 1; i != 0; --i)
-            alloc.destroy(data + i);
-        alloc.deallocate(data, length);
-    }
-    data = 0;
+    create(b, e);
 }
 
-/*** operators ***/
-Str operator+(const Str& s, const Str& t)
+/* 1. rule of three: copy constructor */
+Str::Str(const Str& s)
 {
-    Str ret = s;
-    ret += t;
-    return ret;
+    create(s.begin(), s.end());
 }
 
+/* 2. rule of three: destructor */
+Str::~Str()
+{
+    uncreate();
+}
+
+/* 3. rule of three: assignment operator */
 Str& Str::operator=(const Str& rhs)
 {
     if (this != &rhs) {
@@ -59,7 +50,21 @@ Str& Str::operator=(const Str& rhs)
     return *this;
 }
 
-/*** friend and non-member functions ***/
+
+/*** operators ***/
+Str& Str::operator+=(const Str& s)
+{
+    create(s.begin(), s.end());
+    return *this;
+}
+
+Str operator+(const Str& s, const Str& t)
+{
+    Str ret = s;
+    ret += t;
+    return ret;
+}
+
 ostream& operator<<(ostream& os, const Str& s)
 {
     for (Str::size_type i = 0; i != s.size(); ++i)
@@ -70,25 +75,77 @@ ostream& operator<<(ostream& os, const Str& s)
 
 istream& operator>>(istream& is, Str& s)
 {
-    char buffer[1000];
-    Str::size_type n = 0;
+    s.uncreate();
 
     char c;
     while (is.get(c) && isspace(c));
 
     if (is) {
         do {
-            buffer[n++] = c;
+            s.append(c);
         } while (is.get(c) && !isspace(c));
 
         if (is)
             is.unget();
     }
-    
-    s.data = s.alloc.allocate(n + 1);
-    std::uninitialized_copy(buffer, buffer + n, s.data);
-    s.data[n] = 0;
-    s.length = n;
 
     return is;
+}
+
+/*** private member functions ***/
+void Str::resize(size_type capacity)
+{
+    char* first_ = alloc.allocate(capacity);
+    char* next_ = std::uninitialized_copy(first, next, first_);
+    uncreate();
+    first = first_;
+    next = next_;
+    last = first + capacity;
+}
+
+void Str::append(const char& c)
+{
+    if (next == last)
+        resize(std::max(size_type(1), 2 * size()));
+
+    alloc.construct(next++, c);
+}
+
+/*** memory management ***/
+
+void Str::create()
+{
+    first = next = last = 0;
+}
+
+void Str::create(size_type n, char c)
+{
+    first = alloc.allocate(n);
+    next = last = first + n;
+    std::uninitialized_fill(first, first + n, c);
+}
+
+void Str::create(const char* cp) 
+{
+    size_type n = std::strlen(cp);
+    first = alloc.allocate(n);
+    next = last = std::uninitialized_copy(cp, cp + n, first);
+}
+
+template<class In>
+void Str::create(In b, In e)
+{
+    size_type n = e - b;
+    first = alloc.allocate(n);
+    next = last = std::uninitialized_copy(b, e, first);
+}
+
+void Str::uncreate()
+{
+    if (first) {
+        for (char* it = last; it != first; --it)
+            alloc.destroy(it);
+        alloc.deallocate(first, last - first);
+    }
+    first = next = last = 0;
 }
