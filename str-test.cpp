@@ -8,15 +8,16 @@ using std::ifstream;
 int main(int argc, const char* argv[])
 {
     Str s("abc");
-    Str t("abc");
+    char t[] = "abc";
 
+    Str r;
 
-    cout << (s <  t) << endl;
+    bool x = r;
+    bool y = s;
 
-    cout << (s >  t) << endl;
-    cout << (s <= t) << endl;
-    cout << (s >= t) << endl;
-    cout << (s == t) << endl;
+    cout << s << endl;
+    cout << t << endl;
+    cout << r << endl;
 
     return 0;
 }

@@ -1,11 +1,16 @@
 #include <iostream>
+#include <iterator>
 #include <algorithm>
 #include <cstring>
 #include <memory>
 #include <cctype>
 #include "str.h"
 
-using std::ostream;     using std::istream;
+using std::ostream;     using std::ostream_iterator;
+using std::istream;     using std::uninitialized_fill;
+using std::copy;        using std::uninitialized_copy;
+using std::min;         using std::strlen;
+using std::max;
 
 /*** constructors ***/
 Str::Str()
@@ -15,7 +20,7 @@ Str::Str()
 
 Str::Str(const char* cp)
 {
-    create(cp, cp + std::strlen(cp));
+    create(cp, cp + strlen(cp));
 }
 
 Str::Str(size_type n, char c)
@@ -75,7 +80,7 @@ bool Str::operator<(const Str& t)
     size_type n = t.size();
 
     size_type i = 0;
-    size_type x = std::min(m, n);
+    size_type x = min(m, n);
 
     while (i != x && first[i] == t[i])
         ++i;
@@ -91,7 +96,7 @@ bool Str::operator>(const Str& t)
     size_type n = t.size();
 
     size_type i = 0;
-    size_type x = std::min(m, n);
+    size_type x = min(m, n);
 
     while (i != x && first[i] == t[i])
         ++i;
@@ -107,7 +112,7 @@ bool Str::operator<=(const Str& t)
     size_type n = t.size();
 
     size_type i = 0;
-    size_type x = std::min(m, n);
+    size_type x = min(m, n);
 
     while (i != x && first[i] == t[i])
         ++i;
@@ -124,7 +129,7 @@ bool Str::operator>=(const Str& t)
     size_type n = t.size();
 
     size_type i = 0;
-    size_type x = std::min(m, n);
+    size_type x = min(m, n);
 
     while (i != x && first[i] == t[i])
         ++i;
@@ -141,7 +146,7 @@ bool Str::operator==(const Str& t)
     size_type n = t.size();
 
     size_type i = 0;
-    size_type x = std::min(m, n);
+    size_type x = min(m, n);
 
     while (i != x && first[i] == t[i])
         ++i;
@@ -151,9 +156,7 @@ bool Str::operator==(const Str& t)
 
 ostream& operator<<(ostream& os, const Str& s)
 {
-    for (Str::size_type i = 0; i != s.size(); ++i)
-        os << s[i];
-    
+    copy(s.begin(), s.end(), ostream_iterator<char>(os));
     return os;
 }
 
@@ -180,7 +183,7 @@ istream& operator>>(istream& is, Str& s)
 void Str::resize(size_type capacity)
 {
     char* first_ = alloc.allocate(capacity);
-    char* next_ = std::uninitialized_copy(first, next, first_);
+    char* next_ = uninitialized_copy(first, next, first_);
     uncreate();
     first = first_;
     next = next_;
@@ -190,7 +193,7 @@ void Str::resize(size_type capacity)
 void Str::append(const char& c)
 {
     if (next == last)
-        resize(std::max(size_type(1), 2 * size()));
+        resize(max(size_type(1), 2 * size()));
 
     alloc.construct(next++, c);
 }
@@ -220,21 +223,21 @@ void Str::create(size_type n, char c)
 {
     first = alloc.allocate(n);
     next = last = first + n;
-    std::uninitialized_fill(first, first + n, c);
+    uninitialized_fill(first, first + n, c);
 }
 
 void Str::create(const char* cp) 
 {
-    size_type n = std::strlen(cp);
+    size_type n = strlen(cp);
     first = alloc.allocate(n);
-    next = last = std::uninitialized_copy(cp, cp + n, first);
+    next = last = uninitialized_copy(cp, cp + n, first);
 }
 
 template<class In> void Str::create(In b, In e)
 {
     size_type n = e - b;
     first = alloc.allocate(n);
-    next = last = std::uninitialized_copy(b, e, first);
+    next = last = uninitialized_copy(b, e, first);
 }
 
 void Str::uncreate()

@@ -10,7 +10,7 @@ public:
 
     Str();
 
-    Str(const char*);
+    explicit Str(const char*);
 
     Str(size_type, char);
     
@@ -30,7 +30,7 @@ public:
 
     Str& operator+=(const Str& s);
 
-    operator const char*() const;
+    operator bool() const { return first; }
 
     bool operator>(const Str&);
     bool operator<(const Str&);
