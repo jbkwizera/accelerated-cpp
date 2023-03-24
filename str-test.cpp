@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include "str.h"
-#include "vec.h"
 
 using std::cout;        using std::endl;
 using std::ifstream;
