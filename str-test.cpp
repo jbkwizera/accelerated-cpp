@@ -8,19 +8,16 @@ using std::ifstream;
 
 int main(int argc, const char* argv[])
 {
-    Str s("a");
+    Str s("abc");
+    Str t("abc");
 
-    char sptr[s.size() + 1];
-    s.copy(sptr, s.size());
-    sptr[s.size()] = 0;
 
-    s = "b";
+    cout << (s <  t) << endl;
 
-    Str t = sptr;
-
-    cout << s << endl;
-    cout << sptr << endl;
-    cout << (t + sptr + s) << endl;
+    cout << (s >  t) << endl;
+    cout << (s <= t) << endl;
+    cout << (s >= t) << endl;
+    cout << (s == t) << endl;
 
     return 0;
 }

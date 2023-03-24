@@ -54,7 +54,9 @@ Str& Str::operator=(const Str& rhs)
 /*** operators ***/
 Str& Str::operator+=(const Str& s)
 {
-    create(s.begin(), s.end());
+    for (const char* it = s.begin(); it != s.end(); ++it)
+        append(*it);
+
     return *this;
 }
 
@@ -63,6 +65,88 @@ Str operator+(const Str& s, const Str& t)
     Str ret = s;
     ret += t;
     return ret;
+}
+
+bool Str::operator<(const Str& t)
+{
+    if (&t == this) return 0;
+
+    size_type m = size();
+    size_type n = t.size();
+
+    size_type i = 0;
+    size_type x = std::min(m, n);
+
+    while (i != x && first[i] == t[i])
+        ++i;
+
+    return (i == x && n != i) || (i != x && first[i] < t[i]);
+}
+
+bool Str::operator>(const Str& t)
+{
+    if (&t == this) return 0;
+
+    size_type m = size();
+    size_type n = t.size();
+
+    size_type i = 0;
+    size_type x = std::min(m, n);
+
+    while (i != x && first[i] == t[i])
+        ++i;
+
+    return (i == x && m != i) || (i != x && first[i] > t[i]);
+}
+
+bool Str::operator<=(const Str& t)
+{
+    if (&t == this) return 1;
+
+    size_type m = size();
+    size_type n = t.size();
+
+    size_type i = 0;
+    size_type x = std::min(m, n);
+
+    while (i != x && first[i] == t[i])
+        ++i;
+
+    return (i == x && (n != i || m == n)) ||
+           (i != x && first[i] <= t[i]);
+}
+
+bool Str::operator>=(const Str& t)
+{
+    if (&t == this) return 1;
+
+    size_type m = size();
+    size_type n = t.size();
+
+    size_type i = 0;
+    size_type x = std::min(m, n);
+
+    while (i != x && first[i] == t[i])
+        ++i;
+
+    return (i == x && (m != i || m == n)) ||
+           (i != x && first[i] >= t[i]);
+}
+
+bool Str::operator==(const Str& t)
+{
+    if (&t == this) return 1;
+
+    size_type m = size();
+    size_type n = t.size();
+
+    size_type i = 0;
+    size_type x = std::min(m, n);
+
+    while (i != x && first[i] == t[i])
+        ++i;
+
+    return (i == x && m == n);
 }
 
 ostream& operator<<(ostream& os, const Str& s)
@@ -111,8 +195,22 @@ void Str::append(const char& c)
     alloc.construct(next++, c);
 }
 
-/*** memory management ***/
+char Str::pop()
+{
+    if (first) return 0;
 
+    char ret = *--next;
+    alloc.destroy(next);
+
+    size_type capacity = last - first;
+    size_type n = next - first;
+
+    if (n > 0 && n == capacity/4) resize(capacity/2);
+
+    return ret;
+}
+
+/*** memory management ***/
 void Str::create()
 {
     first = next = last = 0;
@@ -132,8 +230,7 @@ void Str::create(const char* cp)
     next = last = std::uninitialized_copy(cp, cp + n, first);
 }
 
-template<class In>
-void Str::create(In b, In e)
+template<class In> void Str::create(In b, In e)
 {
     size_type n = e - b;
     first = alloc.allocate(n);

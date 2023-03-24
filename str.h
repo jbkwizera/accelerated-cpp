@@ -32,6 +32,12 @@ public:
 
     operator const char*() const;
 
+    bool operator>(const Str&);
+    bool operator<(const Str&);
+    bool operator>=(const Str&);
+    bool operator<=(const Str&);
+    bool operator==(const Str&);
+
     char* begin() { return first; }
     const char* begin() const { return first; }
 
@@ -50,6 +56,7 @@ private:
 
     void resize(size_type);
     void append(const char&);
+    char pop();
 
     std::allocator<char> alloc;
     
@@ -60,7 +67,6 @@ private:
     template<class In> void create(In b, In e);
 
     void uncreate();
-    void uncreate(char*);
 };
 
 std::ostream& operator<<(std::ostream&, const Str&);
