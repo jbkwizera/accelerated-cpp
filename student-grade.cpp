@@ -7,10 +7,8 @@
 #include <algorithm>
 #include <stdexcept>
 #include <list>
-
-#include "grade.h"
 #include "stats.h"
-#include "student.h"
+#include "student-info.h"
 
 using std::cout;            using std::string;
 using std::cin;             using std::streamsize;
@@ -21,22 +19,21 @@ using std::list;
 
 int main()
 {
-    list<Student> students;
-    Student record;
+    list<Student_info> students;
+    Student_info s;
     string::size_type maxlen = 0;
-    while (read_student(cin, record)) {
-        maxlen = max(maxlen, record.name.size());
-        students.push_back(record);
+    while (s.read(cin)) {
+        maxlen = max(maxlen, s.name().size());
+        students.push_back(s);
     }
 
     students.sort(compare);
-    for (list<Student>::const_iterator student = students.begin();
-            student != students.end(); student++) {
-        cout << student->name
-             << string(maxlen + 1 - (student->name).size(), ' ');
+    for (auto student: students) {
+        cout << student.name()
+             << string(maxlen + 1 - (student.name()).size(), ' ');
 
         try {
-            double final_grade = grade(*student);
+            double final_grade = student.grade();
             streamsize prec = cout.precision();
             cout << setprecision(3) << final_grade << setprecision(prec);
         } catch (domain_error e) {
