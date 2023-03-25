@@ -10,6 +10,7 @@ using std::istream;         using std::vector;
 using std::domain_error;    using std::accumulate;
 using std::remove_copy;     using std::back_inserter;
 
+/*** class implementation ***/
 Student_info::Student_info(): midterm(0), final_exam(0) {}
 
 Student_info::Student_info(std::istream& in)
@@ -22,8 +23,8 @@ istream& Student_info::read(istream& in)
     in >> n >> midterm >> final_exam;
     read_hw(in);
     total = homework.size() == 0?
-            grade(midterm, final_exam, 0):
-            grade(midterm, final_exam, homework);
+            ::grade(midterm, final_exam, 0):
+            ::grade(midterm, final_exam, homework);
     return in;
 }
 
@@ -49,7 +50,7 @@ double Student_info::grade_mean() const
     double homework_mean = accumulate(
        homework.begin(), homework.end(), 0.0) / homework.size();
 
-    return grade(midterm, final_exam, homework_mean);
+    return ::grade(midterm, final_exam, homework_mean);
 }
 
 double Student_info::grade_optimistic_median() const
@@ -59,9 +60,9 @@ double Student_info::grade_optimistic_median() const
             back_inserter(nonzero), 0);
 
     if (nonzero.empty())
-        return grade(midterm, final_exam, 0);
+        return ::grade(midterm, final_exam, 0);
 
-    return grade(midterm, final_exam, ::median(nonzero));
+    return ::grade(midterm, final_exam, ::median(nonzero));
 }
 
 bool Student_info::pass() const
@@ -69,22 +70,39 @@ bool Student_info::pass() const
     return total >= PASS_GRADE;
 }
 
-/*** private member functions ***/
-double Student_info::grade(
-    double midterm, double final_exam, double homework) const
+bool Student_info::did_all_homework() const
+{
+    return (find(homework.begin(), homework.end(), 0) ==
+            homework.end());
+}
+
+/*** external functions ***/
+double grade(
+    double midterm, double final_exam, double homework)
 {
     return 0.2 * midterm + 0.4 * final_exam + 0.4 * homework;
 }
 
-double Student_info::grade(
-    double midterm, double final_exam, const vector<double>& hw) const
+double grade(
+    double midterm, double final_exam, const vector<double>& hw)
 {
     if (hw.size() == 0)
         throw domain_error("student has done no homework");
     return grade(midterm, final_exam, ::median(hw));
 }
 
-/*** external functions ***/
+vector<Student_info> extract_fails(vector<Student_info>& students)
+{
+    vector<Student_info>::iterator fbegin =
+        std::stable_partition(students.begin(), students.end(),
+                [](const Student_info& s) { return s.pass(); });
+
+    vector<Student_info> fail(fbegin, students.end());
+    students.erase(fbegin, students.end());
+
+    return fail;
+}
+
 bool compare(const Student_info& x, const Student_info& y)
 {
     return x.name() < y.name();
