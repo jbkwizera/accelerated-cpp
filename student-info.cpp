@@ -21,22 +21,10 @@ Student_info::Student_info(std::istream& in)
 istream& Student_info::read(istream& in)
 {
     in >> n >> midterm >> final_exam;
-    read_hw(in);
+    ::read_hw(in, homework);
     total = homework.size() == 0?
             ::grade(midterm, final_exam, 0):
             ::grade(midterm, final_exam, homework);
-    return in;
-}
-
-istream& Student_info::read_hw(istream& in)
-{
-    if (in) {
-        homework.clear();
-        double x;
-        while (in >> x)
-            homework.push_back(x);
-        in.clear();
-    }
     return in;
 }
 
@@ -89,6 +77,18 @@ double grade(
     if (hw.size() == 0)
         throw domain_error("student has done no homework");
     return grade(midterm, final_exam, ::median(hw));
+}
+
+istream& read_hw(istream& in, vector<double>& hw)
+{
+    if (in) {
+        hw.clear();
+        double x;
+        while (in >> x)
+            hw.push_back(x);
+        in.clear();
+    }
+    return in;
 }
 
 vector<Student_info> extract_fails(vector<Student_info>& students)

@@ -18,16 +18,18 @@ public:
     bool did_all_homework() const;
     bool pass() const;
 
+protected:
+    double midterm, final_exam, total;
+    std::vector<double> homework;
+
 private:
     std::string n;
-    double midterm, final_exam, total;
     static const int PASS_GRADE = 60;
-    std::vector<double> homework;
-    std::istream& read_hw(std::istream& in);
 };
 
 double grade(double, double, double);
 double grade(double, double, const std::vector<double>&);
+std::istream& read_hw(std::istream&, std::vector<double>&);
 bool compare(const Student_info&, const Student_info&);
 bool compare_grade(const Student_info&, const Student_info&);
 std::vector<Student_info> extract_fails(std::vector<Student_info>&);
