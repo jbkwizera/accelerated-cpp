@@ -1,21 +1,18 @@
-// student-hw-separate.cpp: separate students who did/didn't
-// do all the homework assignments
 #include <iostream>
 #include <vector>
 #include "grade-analysis.h"
-#include "student.h"
-#include "grade.h"
+#include "student-info.h"
 
 using std::cout;    using std::endl;
 using std::cin;     using std::vector;
 
 int main()
 {
-    vector<Student> did, didnt;
-    Student s;
+    vector<Student_info> did, didnt;
+    Student_info s;
 
-    while (read_student(cin, s)) {
-        if (did_all_homework(s))
+    while (s.read(cin)) {
+        if (s.did_all_homework())
             did.push_back(s);
         else
             didnt.push_back(s);
@@ -32,8 +29,8 @@ int main()
     }
 
     write_analysis(cout, "median", grade_aux, did, didnt);
-    write_analysis(cout, "average", grade_mean, did, didnt);
-    write_analysis(cout, "optimistic", grade_optimistic_median, did, didnt);
+    write_analysis(cout, "average", grade_mean_aux, did, didnt);
+    write_analysis(cout, "optimistic", grade_optimistic_median_aux, did, didnt);
 
     return 0;
 }

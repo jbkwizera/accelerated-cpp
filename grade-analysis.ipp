@@ -1,12 +1,11 @@
 #include <algorithm>
 #include <vector>
-#include "student.h"
+#include "student-info.h"
 #include "stats.h"
-#include "grade.h"
 
 template<class GraderFunction>
 double tanalysis(
-    const std::vector<Student>& students,
+    const std::vector<Student_info>& students,
     GraderFunction gradef)
 {
     std::vector<double> grades;

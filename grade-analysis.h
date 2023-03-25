@@ -5,18 +5,22 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "student.h"
+#include "student-info.h"
 
 void write_analysis(
     std::ostream&,
     const std::string&,
-    double(const Student&),
-    const std::vector<Student>&,
-    const std::vector<Student>&);
+    double(const Student_info&),
+    const std::vector<Student_info>&,
+    const std::vector<Student_info>&);
 
 template<class GraderFunction>
-double analysis(const std::vector<Student>&, GraderFunction gradef);
+double analysis(const std::vector<Student_info>&, GraderFunction gradef);
 
-#include "grade-analysis.tpp"
+double grade_aux(const Student_info&);
+double grade_mean_aux(const Student_info&);
+double grade_optimistic_median_aux(const Student_info&);
+
+#include "grade-analysis.ipp"
 
 #endif
