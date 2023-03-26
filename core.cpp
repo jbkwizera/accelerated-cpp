@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "student.h"
+#include "student-utils.h"
 #include "core.h"
 
 using std::string;      using std::vector;
@@ -49,4 +49,9 @@ double Grad::grade() const
 bool compare(const Core& lhs, const Core& rhs)
 {
     return lhs.name() < rhs.name();
+}
+
+bool compare_ptr(const Core* lhs, const Core* rhs)
+{
+    return lhs->name() < rhs->name();
 }

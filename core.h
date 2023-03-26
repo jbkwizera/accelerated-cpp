@@ -34,5 +34,6 @@ private:
 };
 
 bool compare(const Core&, const Core&);
+bool compare_ptr(const Core*, const Core*);
 
 #endif
