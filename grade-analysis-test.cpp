@@ -1,15 +1,22 @@
+/**
+ * dependencies:
+ *     stats.cpp
+ *     student.cpp
+ *     student-utils.cpp
+ *     grade-analysis.cpp
+ **/
 #include <iostream>
 #include <vector>
 #include "grade-analysis.h"
-#include "student-info.h"
+#include "student.h"
 
 using std::cout;    using std::endl;
 using std::cin;     using std::vector;
 
 int main()
 {
-    vector<Student_info> did, didnt;
-    Student_info s;
+    vector<Student> did, didnt;
+    Student s;
 
     while (s.read(cin)) {
         if (s.did_all_homework())

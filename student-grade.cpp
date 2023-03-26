@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <list>
 #include "stats.h"
-#include "student-info.h"
+#include "student.h"
 
 using std::cout;            using std::string;
 using std::cin;             using std::streamsize;
@@ -19,8 +19,8 @@ using std::list;
 
 int main()
 {
-    list<Student_info> students;
-    Student_info s;
+    list<Student> students;
+    Student s;
     string::size_type maxlen = 0;
     while (s.read(cin)) {
         maxlen = max(maxlen, s.name().size());

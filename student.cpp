@@ -1,6 +1,5 @@
 #include <iostream>
 #include <algorithm>
-#include <stdexcept>
 #include <numeric>
 #include <vector>
 #include "stats.h"

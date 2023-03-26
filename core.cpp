@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "student-info.h"
+#include "student.h"
 #include "core.h"
 
 using std::string;      using std::vector;

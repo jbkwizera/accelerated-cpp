@@ -1,3 +1,9 @@
+/**
+ * dependencies:
+ *     stats.cpp
+ *     student.cpp
+ *     student-utils.cpp
+ **/
 #include <iostream>
 #include <algorithm>
 #include <iomanip>

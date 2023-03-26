@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <stdexcept>
 #include "stats.h"
 #include "student.h"
 #include "student-utils.h"
 
 using std::vector;      using std::stable_partition;
-using std::istream;
+using std::istream;     using std::domain_error;
 
 double grade(
     double midterm, double final_exam, double homework)
