@@ -9,17 +9,23 @@ class Core {
     friend class CoreHandle;
 
 public:
-    Core(): midterm(0), final_exam(0) {}
+    Core(): midterm(0), final_exam(0), total(0) {}
     Core(std::istream& in) { read(in); }
     virtual ~Core() {}
 
     std::string name() const;
     virtual std::istream& read(std::istream&);
     virtual double grade() const;
+    virtual double grade_mean() const;
+    virtual double grade_optimistic_median() const;
+    virtual bool did_all_homework() const;
+    virtual bool pass() const;
 
 protected:
-    double midterm, final_exam;
+    double midterm, final_exam, total;
+    static const int PassGrade = 60;
     std::vector<double> homework;
+
     std::istream& read_common(std::istream&);
     virtual Core* clone() const { return new Core(*this); }
 
@@ -40,8 +46,5 @@ protected:
 private:
     double thesis;
 };
-
-bool compare(const Core&, const Core&);
-bool compare_ptr(const Core*, const Core*);
 
 #endif

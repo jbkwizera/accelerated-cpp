@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include "stats.h"
-#include "student.h"
+#include "core-handle.h"
 #include "student-utils.h"
 
 using std::vector;      using std::stable_partition;
@@ -35,24 +35,14 @@ istream& read_hw(istream& in, vector<double>& hw)
     return in;
 }
 
-vector<Student> extract_fails(vector<Student>& students)
+vector<CoreHandle> extract_fails(vector<CoreHandle>& students)
 {
-    vector<Student>::iterator fbegin =
+    vector<CoreHandle>::iterator fbegin =
         stable_partition(students.begin(), students.end(),
-                [](const Student& s) { return s.pass(); });
+                [](const CoreHandle& s) { return s.pass(); });
 
-    vector<Student> fail(fbegin, students.end());
+    vector<CoreHandle> fail(fbegin, students.end());
     students.erase(fbegin, students.end());
 
     return fail;
-}
-
-bool compare(const Student& x, const Student& y)
-{
-    return x.name() < y.name();
-}
-
-bool compare_grade(const Student& x, const Student& y)
-{
-    return x.grade() < y.grade();
 }

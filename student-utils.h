@@ -3,13 +3,11 @@
 
 #include <iostream>
 #include <vector>
-#include "student.h"
+#include "core-handle.h"
 
 double grade(double, double, double);
 double grade(double, double, const std::vector<double>&);
 std::istream& read_hw(std::istream&, std::vector<double>&);
-bool compare(const Student&, const Student&);
-bool compare_grade(const Student&, const Student&);
-std::vector<Student> extract_fails(std::vector<Student>&);
+std::vector<CoreHandle> extract_fails(std::vector<CoreHandle>&);
 
 #endif

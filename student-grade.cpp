@@ -1,4 +1,10 @@
-// Working with batches of data
+/**
+ * dependencies:
+ *     stats.cpp
+ *     student-utils.cpp
+ *     core.cpp
+ *     core-handle.cpp
+ **/
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -8,7 +14,7 @@
 #include <stdexcept>
 #include <list>
 #include "stats.h"
-#include "student.h"
+#include "core-handle.h"
 
 using std::cout;            using std::string;
 using std::cin;             using std::streamsize;
@@ -19,15 +25,15 @@ using std::list;
 
 int main()
 {
-    list<Student> students;
-    Student s;
+    list<CoreHandle> students;
+    CoreHandle s;
     string::size_type maxlen = 0;
     while (s.read(cin)) {
         maxlen = max(maxlen, s.name().size());
         students.push_back(s);
     }
 
-    students.sort(compare);
+    students.sort(CoreHandle::compare);
     for (auto student: students) {
         cout << student.name()
              << string(maxlen + 1 - (student.name()).size(), ' ');
