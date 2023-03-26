@@ -6,6 +6,8 @@
 #include <iostream>
 
 class Core {
+    friend class CoreHandle;
+
 public:
     Core(): midterm(0), final_exam(0) {}
     Core(std::istream& in) { read(in); }
@@ -19,6 +21,7 @@ protected:
     double midterm, final_exam;
     std::vector<double> homework;
     std::istream& read_common(std::istream&);
+    virtual Core* clone() const { return new Core(*this); }
 
 private:
     std::string n;
@@ -30,6 +33,9 @@ public:
     Grad(std::istream& in) { read(in); }
     double grade() const;
     std::istream& read(std::istream&);
+
+protected:
+    Grad* clone() const { return new Grad(*this); }
 
 private:
     double thesis;
