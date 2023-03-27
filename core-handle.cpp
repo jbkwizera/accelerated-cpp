@@ -1,8 +1,11 @@
 #include <iostream>
+#include <stdexcept>
+#include <string>
 #include "core-handle.h"
 #include "core.h"
 
-using std::istream;
+using std::istream;     using std::runtime_error;
+using std::string;
 
 CoreHandle::CoreHandle(const CoreHandle& ch): cp(0)
 {
@@ -22,10 +25,12 @@ istream& CoreHandle::read(istream& in)
 {
     delete cp;
     char chr;
+
     in >> chr;
 
-    if (chr == 'U') cp = new Core(in);
-    else            cp = new Grad(in);
+    if      (chr == 'U') cp = new Core(in);
+    else if (chr == 'G') cp = new Grad(in);
+    else                 cp = new Credit(in);
 
     return in;
 }

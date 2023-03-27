@@ -35,7 +35,7 @@ private:
 
 class Grad: public Core {
 public:
-    Grad(): thesis(0) {};
+    Grad(): thesis(0) {}
     Grad(std::istream& in) { read(in); }
     double grade() const;
     std::istream& read(std::istream&);
@@ -45,6 +45,18 @@ protected:
 
 private:
     double thesis;
+};
+
+class Credit: public Core {
+public:
+    Credit() {}
+    Credit(std::istream& in) { read(in); }
+
+    std::istream& read(std::istream&);
+    double grade() const;
+
+protected:
+    Credit* clone() const { return new Credit(*this); }
 };
 
 #endif

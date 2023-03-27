@@ -1,7 +1,6 @@
 /**
  * dependencies:
  *     stats.cpp
- *     student.cpp
  *     student-utils.cpp
  *     core.cpp
  *     core-handle.cpp
@@ -34,12 +33,12 @@ int main()
     sort(students.begin(), students.end(), CoreHandle::compare);
 
     for (auto student: students) {
-        cout << std::left << std::setw(maxlen) << student.name() << " "
-             << std::right << std::fixed << std::setprecision(2);
+        cout << std::left << std::setw(maxlen) << student.name() << " ";
 
         try {
             double grade = student.grade();
-            cout << grade << endl;
+            cout << std::right << std::setw(6)
+                 << std::fixed << std::setprecision(2) << grade << endl;
         } catch (domain_error e) {
             cerr << "\033[1;35m" << e.what() << "\033[0m" << endl;
         } 

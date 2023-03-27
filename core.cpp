@@ -95,3 +95,18 @@ double Grad::grade() const
 
     return min(thesis, total);
 }
+
+/*** Credit implementation ***/
+istream& Credit::read(istream& in)
+{
+    read_common(in);
+    ::read_hw(in, homework);
+    total = homework.size() == 0?
+            (midterm + final_exam) / 2.0:
+            ::grade(midterm, final_exam, homework);
+    return in;
+}
+
+double Credit::grade() const {
+    return total;
+}
