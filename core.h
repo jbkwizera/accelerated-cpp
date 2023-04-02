@@ -7,6 +7,7 @@
 
 class Core {
     friend class CoreHandle;
+    template<class T> friend class Handle;
 
 public:
     Core(): midterm(0), final_exam(0), total(0) {}
