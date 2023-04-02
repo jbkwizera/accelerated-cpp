@@ -2,22 +2,22 @@
  * dependencies:
  *     stats.cpp
  *     core.cpp
- *     core-handle.cpp
+ *     student-info.cpp
  *     student-utils.cpp
  *     grade-analysis.cpp
  **/
 #include <iostream>
 #include <vector>
 #include "grade-analysis.h"
-#include "core-handle.h"
+#include "student-info.h"
 
 using std::cout;    using std::endl;
 using std::cin;     using std::vector;
 
 int main()
 {
-    vector<CoreHandle> did, didnt;
-    CoreHandle s;
+    vector<StudentInfo> did, didnt;
+    StudentInfo s;
 
     while (s.read(cin)) {
         if (s.did_all_homework())

@@ -3,7 +3,7 @@
  *     stats.cpp
  *     student-utils.cpp
  *     core.cpp
- *     core-handle.cpp
+ *     core-handle.cpp !important: needs to be friends with Core 
  **/
 #include <iostream>
 #include <iomanip>

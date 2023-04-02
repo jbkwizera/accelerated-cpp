@@ -1,9 +1,9 @@
 /**
  * dependencies:
  *     stats.cpp
- *     student-utils.cpp
  *     core.cpp
- *     core-handle.cpp
+ *     student-utils.cpp
+ *     student-info.cpp
  **/
 #include <iostream>
 #include <iomanip>
@@ -11,7 +11,7 @@
 #include <string>
 #include <algorithm>
 #include <stdexcept>
-#include "core-handle.h"
+#include "student-info.h"
 
 using std::vector;          using std::cin;
 using std::cout;            using std::endl;
@@ -21,8 +21,8 @@ using std::sort;
 
 int main()
 {
-    vector<CoreHandle> students;
-    CoreHandle student;
+    vector<StudentInfo> students;
+    StudentInfo student;
     string::size_type maxlen(0);
 
     while (student.read(cin)) {
@@ -30,7 +30,7 @@ int main()
         maxlen = max(maxlen, student.name().size());
     }
 
-    sort(students.begin(), students.end(), CoreHandle::compare);
+    sort(students.begin(), students.end(), StudentInfo::compare);
 
     for (auto student: students) {
         cout << std::left << std::setw(maxlen) << student.name() << " ";
